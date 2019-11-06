@@ -1,0 +1,28 @@
+{% extends "bus_display/_base.html" %}
+
+{% block title %}
+
+    ホーム（バス拠点一覧）
+{% endblock %}
+
+{% block main %}
+
+
+        <table>
+            <tr>
+                <th>オフィス名</th>
+                <th>RaspberryPi名</th>
+                <th>現在の人数</th>
+            </tr>
+            {% for office_brunch in office_brunches %}
+                {% for raspberry_pi in office_brunch.raspberry_pis.all %}
+                    <tr>
+                        <td>{{ office_brunch.name }}</td>
+                        <td>{{ raspberry_pi.name }}</td>
+                        <td>{{ raspberry_pi.get_active_beacons.count }}人</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </table>
+
+{% endblock %}
