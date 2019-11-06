@@ -1,0 +1,18 @@
+# [START runtime]
+runtime: python
+runtime_config:
+    python_version: 3
+entrypoint: gunicorn -b :$PORT bus_count.wsgi
+handlers:
+
+- url: /static
+  static_dir: static/
+- url: /.*
+  script: auto
+
+automatic_scaling:
+    min_idle_instances: automatic   # idle状態にあるインスタンスの最小値
+    max_idle_instances: 1                 # idle状態にあるインスタンスの最大値
+    min_pending_latency: 2000ms  # リクエストを処理するまでに許される待ち時間の最小
+    max_pending_latency: automatic
+# [END runtime]
