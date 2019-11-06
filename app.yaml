@@ -1,7 +1,5 @@
 # [START runtime]
-runtime: python
-runtime_config:
-    python_version: 3
+runtime: python37
 entrypoint: gunicorn -b :$PORT bus_count.wsgi
 handlers:
 
