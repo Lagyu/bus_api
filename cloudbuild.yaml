@@ -4,7 +4,7 @@ steps:
   args: ['-m', 'venv', 'venv']
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
-  args: [".", "./venv/bin/activate"]
+  args: ["source", "venv/bin/activate"]
 - name: 'python:3.7'
   entrypoint: python3
   args: ['-m', 'pip', 'install', '-r', 'requirements.txt']
