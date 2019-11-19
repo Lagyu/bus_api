@@ -28,7 +28,7 @@ class Device(models.Model):
 class Ride(models.Model):
     device = models.ForeignKey(to=Device, on_delete=models.CASCADE)
     member_id = models.CharField(max_length=30)
-    created_at = models.DateTimeField(auto_created=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.member_id + " at " + str(self.created_at)
