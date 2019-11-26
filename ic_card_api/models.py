@@ -151,12 +151,16 @@ def get_color_code(ride_number):
     else:
         return "#E52100"
 
+
 class BusPlan(models.Model):
     bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
     # Times are DateTimeField for TimeField does not support tzinfo.
     depart_at = models.DateTimeField()
     arrive_at = models.DateTimeField()
     default_count_close_after_departure_minutes = models.IntegerField(default=5)
+
+    def __str__(self):
+        return self.bus_route.name + " (" + str(self.depart_at) + "発)"
 
 
 class Device(models.Model):
