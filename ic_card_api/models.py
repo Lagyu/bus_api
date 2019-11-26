@@ -59,9 +59,9 @@ class BusRoute(models.Model):
         if len(departure_time_list_for_today) > 0:
             current_time = timezone.now()
             next_departure_time = reduce(lambda best_time, dep_time: dep_time
-                                         if (current_time < dep_time < best_time)
-                                         or (best_time < current_time < dep_time)
-                                         else best_time, departure_time_list_for_today)
+            if (current_time < dep_time < best_time)
+               or (best_time < current_time < dep_time)
+            else best_time, departure_time_list_for_today)
 
             return next_departure_time
         else:
@@ -73,13 +73,35 @@ class BusRoute(models.Model):
         if len(close_count_time_list_for_today) > 0:
             current_time = timezone.now()
             next_close_time = reduce(lambda best_time, close_time: close_time
-                                     if (current_time < close_time < best_time)
-                                     or (best_time < current_time < close_time)
-                                     else best_time, close_count_time_list_for_today)
+            if (current_time < close_time < best_time)
+               or (best_time < current_time < close_time)
+            else best_time, close_count_time_list_for_today)
 
             return next_close_time
         else:
             return None
+
+    def last_close_count_datetime_for_today(self, ):
+        # todo: 土日対応
+        close_count_time_list_for_today = self.get_departure_timetable_for_today()
+        if len(close_count_time_list_for_today) > 0:
+            current_time = timezone.now()
+            last_close_time = reduce(lambda best_time, close_time: close_time if (close_time < current_time)
+                                     else best_time, close_count_time_list_for_today)
+
+            return last_close_time
+        else:
+            return None
+
+    def get_wait_persons_for_the_next_bus(self):
+        count_since_datetime = self.last_close_count_datetime_for_today()
+        unique_user_id = []
+        rides_for_the_bus_route = Ride.objects.filter(device__bus_route=self, created_at__gt=count_since_datetime)
+        for ride in rides_for_the_bus_route:
+            if ride.member_id not in unique_user_id:
+                unique_user_id.append(ride.member_id)
+
+        return len(unique_user_id)
 
 
 class BusPlan(models.Model):

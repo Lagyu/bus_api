@@ -8,6 +8,18 @@ class OfficeBrunchSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class BusPlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ic_card_api.models.BusPlan
+        fields = "__all__"
+
+
+class BusRouteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ic_card_api.models.BusRoute
+        fields = "__all__"
+
+
 class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = ic_card_api.models.Device

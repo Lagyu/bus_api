@@ -10,6 +10,16 @@ class OfficeBrunchViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.OfficeBrunchSerializer
 
 
+class BusRouteViewSet(viewsets.ModelViewSet):
+    queryset = models.BusRoute.objects.all()
+    serializer_class = serializers.BusRouteSerializer
+
+
+class BusPlanViewSet(viewsets.ModelViewSet):
+    queryset = models.BusPlan.objects.all()
+    serializer_class = serializers.BusPlanSerializer
+
+
 class DeviceSerializer(viewsets.ModelViewSet):
     queryset = models.Device.objects.all()
     serializer_class = serializers.DeviceSerializer
