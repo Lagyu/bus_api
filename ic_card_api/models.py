@@ -69,6 +69,7 @@ class BusRoute(models.Model):
         else:
             return None
 
+    @property
     def next_close_count_datetime_for_today(self):
         # todo: 土日対応
         close_count_time_list_for_today = self.get_departure_timetable_for_today()
@@ -83,7 +84,8 @@ class BusRoute(models.Model):
         else:
             return None
 
-    def last_close_count_datetime_for_today(self, ):
+    @property
+    def last_close_count_datetime_for_today(self):
         # todo: 土日対応
         close_count_time_list_for_today = self.get_departure_timetable_for_today()
         if len(close_count_time_list_for_today) > 0:
@@ -95,8 +97,9 @@ class BusRoute(models.Model):
         else:
             return None
 
-    def get_wait_persons_for_the_next_bus(self):
-        count_since_datetime = self.last_close_count_datetime_for_today()
+    @property
+    def unique_rider_count_for_the_next_bus(self):
+        count_since_datetime = self.last_close_count_datetime_for_today
         unique_user_id = []
         rides_for_the_bus_route = Ride.objects.filter(device__bus_route=self, created_at__gt=count_since_datetime)
         for ride in rides_for_the_bus_route:
