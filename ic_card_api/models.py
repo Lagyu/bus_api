@@ -33,8 +33,9 @@ class BusRoute(models.Model):
                                          related_name="to_office")
 
     def __str__(self):
-        return self.name()
+        return self.name
 
+    @property
     def name(self):
         return self.from_office_brunch.name + "→" + self.to_office_brunch.name
 
