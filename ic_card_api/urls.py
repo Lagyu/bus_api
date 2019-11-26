@@ -6,9 +6,12 @@ app_name = "ic_card_api"
 
 router = routers.DefaultRouter()
 
-router.register("ride_record", views.RideSerializer)
+router.register("ride_record", views.RideViewSet)
+router.register("device", views.DeviceViewSet)
+
 router.register("office_brunch", views.OfficeBrunchViewSet)
-router.register("device", views.DeviceSerializer)
+router.register("bus_route", views.BusRouteViewSet)
+router.register("bus_plan", views.BusPlanViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -20,11 +20,11 @@ class BusPlanViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.BusPlanSerializer
 
 
-class DeviceSerializer(viewsets.ModelViewSet):
+class DeviceViewSet(viewsets.ModelViewSet):
     queryset = models.Device.objects.all()
     serializer_class = serializers.DeviceSerializer
 
 
-class RideSerializer(viewsets.ModelViewSet):
+class RideViewSet(viewsets.ModelViewSet):
     queryset = models.Ride.objects.all()
     serializer_class = serializers.RideSerializer
