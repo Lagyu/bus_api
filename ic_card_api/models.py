@@ -31,9 +31,11 @@ class BusRoute(models.Model):
     to_office_brunch = models.ForeignKey(to=OfficeBrunch,
                                          on_delete=models.CASCADE,
                                          related_name="to_office")
-    name = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
+        return self.name
+
+    def name(self):
         return self.from_office_brunch.name + "→" + self.to_office_brunch.name
 
     def get_departure_timetable_for_today(self):
