@@ -42,7 +42,7 @@ class BusRoute(models.Model):
         time_table = BusPlan.objects.all().filter(bus_route=self).order_by(
             "depart_at")  # type: Union[QuerySet, List[BusPlan]]
         departure_time_list_for_today = [
-            datetime.datetime.combine(datetime.date.today(), time_table_obj.depart_at.time()) for
+            time_table_obj.depart_at.replace(year=timezone.now().year, month=timezone.now().month, day=timezone.now().day) for
             time_table_obj in time_table]
         return departure_time_list_for_today
 
@@ -51,7 +51,7 @@ class BusRoute(models.Model):
         time_table = BusPlan.objects.all().filter(bus_route=self).order_by(
             "depart_at")  # type: Union[QuerySet, List[BusPlan]]
         default_count_close_time_list_for_today = \
-            [datetime.datetime.combine(datetime.date.today(), time_table_obj.depart_at.time()) + datetime.timedelta(
+            [time_table_obj.depart_at.replace(year=timezone.now().year, month=timezone.now().month, day=timezone.now().day) + datetime.timedelta(
                 minutes=time_table_obj.default_count_close_after_departure_minutes) for time_table_obj in time_table]
         return default_count_close_time_list_for_today
 
