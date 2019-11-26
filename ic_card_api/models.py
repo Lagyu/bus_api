@@ -27,10 +27,10 @@ class OfficeBrunch(models.Model):
 class BusRoute(models.Model):
     from_office_brunch = models.ForeignKey(to=OfficeBrunch,
                                            on_delete=models.CASCADE,
-                                           related_name="from_office_brunch")
+                                           related_name="from_office")
     to_office_brunch = models.ForeignKey(to=OfficeBrunch,
                                          on_delete=models.CASCADE,
-                                         related_name="to_office_brunch")
+                                         related_name="to_office")
     name = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
@@ -105,7 +105,7 @@ class BusRoute(models.Model):
 
 
 class BusPlan(models.Model):
-    bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
+    route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
     # Times are DateTimeField for TimeField does not support tzinfo.
     depart_at = models.DateTimeField()
     arrive_at = models.DateTimeField()
@@ -113,7 +113,7 @@ class BusPlan(models.Model):
 
 
 class Device(models.Model):
-    bus_route = models.ForeignKey(to=BusRoute, on_delete=models.CASCADE, null=True)
+    route = models.ForeignKey(to=BusRoute, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=100)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
 
