@@ -111,8 +111,9 @@ class BusRoute(models.Model):
         else:
             return 0
 
+
 class BusPlan(models.Model):
-    route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
+    bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
     # Times are DateTimeField for TimeField does not support tzinfo.
     depart_at = models.DateTimeField()
     arrive_at = models.DateTimeField()
@@ -120,7 +121,7 @@ class BusPlan(models.Model):
 
 
 class Device(models.Model):
-    route = models.ForeignKey(to=BusRoute, on_delete=models.CASCADE, null=True)
+    bus_route = models.ForeignKey(to=BusRoute, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=100)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
 
