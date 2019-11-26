@@ -54,19 +54,3 @@ class BeaconRecord(models.Model):
     raspberry_pi = models.ForeignKey(RaspberryPi, on_delete=models.CASCADE)
     strength = models.IntegerField()
 
-
-class BusRoute(models.Model):
-    start_office_brunch = models.ForeignKey(to=OfficeBrunch,
-                                            on_delete=models.CASCADE,
-                                            related_name="start_office_brunch")
-    goal_office_brunch = models.ForeignKey(to=OfficeBrunch,
-                                           on_delete=models.CASCADE,
-                                           related_name="goal_office_brunch")
-
-    def __str__(self):
-        return self.start_office_brunch.name + "→" + self.goal_office_brunch.name
-
-
-class BusPlan(models.Model):
-    depart_at = models.TimeField()
-    arrive_at = models.TimeField()
