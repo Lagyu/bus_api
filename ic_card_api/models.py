@@ -100,14 +100,16 @@ class BusRoute(models.Model):
     @property
     def unique_rider_count_for_the_next_bus(self):
         count_since_datetime = self.last_close_count_datetime_for_today
-        unique_user_id = []
-        rides_for_the_bus_route = Ride.objects.filter(device__bus_route=self, created_at__gt=count_since_datetime)
-        for ride in rides_for_the_bus_route:
-            if ride.member_id not in unique_user_id:
-                unique_user_id.append(ride.member_id)
+        if count_since_datetime:
+            unique_user_id = []
+            rides_for_the_bus_route = Ride.objects.filter(device__bus_route=self, created_at__gt=count_since_datetime)
+            for ride in rides_for_the_bus_route:
+                if ride.member_id not in unique_user_id:
+                    unique_user_id.append(ride.member_id)
 
-        return len(unique_user_id)
-
+            return len(unique_user_id)
+        else:
+            return 0
 
 class BusPlan(models.Model):
     route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
