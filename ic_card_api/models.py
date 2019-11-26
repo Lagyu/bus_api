@@ -41,8 +41,16 @@ class BusRoute(models.Model):
     def get_departure_timetable_for_today(self):
         time_table = BusPlan.objects.all().filter(bus_route=self).order_by(
             "depart_at")  # type: Union[QuerySet, List[BusPlan]]
+        current_time = timezone.now()
         departure_time_list_for_today = [
-            time_table_obj.depart_at.replace(year=timezone.now().year, month=timezone.now().month, day=timezone.now().day) for
+            datetime.datetime(year=current_time.year,
+                              month=current_time.month,
+                              day=current_time.day,
+                              hour=time_table_obj.depart_at.hour,
+                              minute=time_table_obj.depart_at.minute,
+                              second=time_table_obj.depart_at.second,
+                              microsecond=time_table_obj.depart_at.microsecond,
+                              tzinfo=time_table_obj.depart_at.tzinfo) for
             time_table_obj in time_table]
         return departure_time_list_for_today
 
@@ -50,8 +58,16 @@ class BusRoute(models.Model):
     def get_close_count_timetable_for_today(self):
         time_table = BusPlan.objects.all().filter(bus_route=self).order_by(
             "depart_at")  # type: Union[QuerySet, List[BusPlan]]
+        current_time = timezone.now()
         default_count_close_time_list_for_today = \
-            [time_table_obj.depart_at.replace(year=timezone.now().year, month=timezone.now().month, day=timezone.now().day) + datetime.timedelta(
+            [datetime.datetime(year=current_time.year,
+                               month=current_time.month,
+                               day=current_time.day,
+                               hour=time_table_obj.depart_at.hour,
+                               minute=time_table_obj.depart_at.minute,
+                               second=time_table_obj.depart_at.second,
+                               microsecond=time_table_obj.depart_at.microsecond,
+                               tzinfo=time_table_obj.depart_at.tzinfo) + datetime.timedelta(
                 minutes=time_table_obj.default_count_close_after_departure_minutes) for time_table_obj in time_table]
         return default_count_close_time_list_for_today
 
