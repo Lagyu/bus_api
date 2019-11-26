@@ -124,10 +124,32 @@ class BusRoute(models.Model):
                 if ride.member_id not in unique_user_id:
                     unique_user_id.append(ride.member_id)
 
-            return len(unique_user_id)
+            return {"count": len(unique_user_id), "color": get_color_code(len(unique_user_id))}
         else:
-            return 0
+            return {"count": 0, "color": get_color_code(0)}
 
+
+def get_color_code(ride_number):
+    if ride_number == 0:
+        return "#94E17F"
+    if ride_number == 1:
+        return "#9DE171"
+    if ride_number == 2:
+        return "#ACE163"
+    if ride_number == 3:
+        return "#C0E255"
+    if ride_number == 4:
+        return "#DAE247"
+    if ride_number == 5:
+        return "#E3CD39"
+    if ride_number == 6:
+        return "#E3AA2A"
+    if ride_number == 7:
+        return "#E4821C"
+    if ride_number == 8:
+        return "#E4540E"
+    else:
+        return "#E52100"
 
 class BusPlan(models.Model):
     bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
