@@ -15,9 +15,9 @@ class BusPlanSerializer(serializers.ModelSerializer):
 
 
 class BusRouteSerializer(serializers.ModelSerializer):
-    last_close_count_datetime_for_today = serializers.Field(source="last_close_count_datetime_for_today")
-    next_close_count_datetime_for_today = serializers.Field(source="next_close_count_datetime_for_today")
-    unique_rider_count_for_the_next_bus = serializers.Field(source="unique_rider_count_for_the_next_bus")
+    last_close_count_datetime_for_today = serializers.Field()
+    next_close_count_datetime_for_today = serializers.Field()
+    unique_rider_count_for_the_next_bus = serializers.Field()
 
     class Meta:
         model = ic_card_api.models.BusRoute
