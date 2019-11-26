@@ -20,6 +20,9 @@ class BusRouteSerializer(serializers.ModelSerializer):
     unique_rider_count_for_the_next_bus = serializers.ReadOnlyField()
     name = serializers.ReadOnlyField()
 
+    from_office_brunch = OfficeBrunchSerializer()
+    to_office_brunch = OfficeBrunchSerializer()
+
     class Meta:
         model = ic_card_api.models.BusRoute
         fields = ["from_office_brunch",
