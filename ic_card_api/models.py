@@ -43,7 +43,7 @@ class BusRoute(models.Model):
     def get_departure_timetable_for_today(self):
         time_table = BusPlan.objects.all().filter(bus_route=self).order_by(
             "depart_at")  # type: Union[QuerySet, List[BusPlan]]
-        current_time = timezone.now()
+        current_time = timezone.now().astimezone(pytz.timezone('Asia/Tokyo'))
         departure_time_list_for_today = [
             datetime.datetime(year=current_time.year,
                               month=current_time.month,
@@ -60,7 +60,7 @@ class BusRoute(models.Model):
     def get_close_count_timetable_for_today(self):
         time_table = BusPlan.objects.all().filter(bus_route=self).order_by(
             "depart_at")  # type: Union[QuerySet, List[BusPlan]]
-        current_time = timezone.now()
+        current_time = timezone.now().astimezone(pytz.timezone('Asia/Tokyo'))
         default_count_close_time_list_for_today = \
             [datetime.datetime(year=current_time.year,
                                month=current_time.month,
@@ -78,7 +78,7 @@ class BusRoute(models.Model):
         # todo: 土日対応
         departure_time_list_for_today = self.get_departure_timetable_for_today()
         if len(departure_time_list_for_today) > 0:
-            current_time = timezone.now()
+            current_time = timezone.now().astimezone(pytz.timezone('Asia/Tokyo'))
             next_departure_time = reduce(lambda best_time, dep_time: dep_time
             if (current_time < dep_time < best_time)
                or (best_time < current_time < dep_time)
@@ -93,7 +93,7 @@ class BusRoute(models.Model):
         # todo: 土日対応
         close_count_time_list_for_today = self.get_departure_timetable_for_today()
         if len(close_count_time_list_for_today) > 0:
-            current_time = timezone.now()
+            current_time = timezone.now().astimezone(pytz.timezone('Asia/Tokyo'))
             next_close_time = reduce(lambda best_time, close_time: close_time
             if (current_time < close_time < best_time)
                or (best_time < current_time < close_time)
@@ -108,7 +108,7 @@ class BusRoute(models.Model):
         # todo: 土日対応
         close_count_time_list_for_today = self.get_departure_timetable_for_today()
         if len(close_count_time_list_for_today) > 0:
-            current_time = timezone.now()
+            current_time = timezone.now().astimezone(pytz.timezone('Asia/Tokyo'))
             last_close_time = reduce(lambda best_time, close_time: close_time if (close_time < current_time)
                                      else best_time, close_count_time_list_for_today)
 
