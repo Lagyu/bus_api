@@ -10,6 +10,7 @@ import datetime
 from typing import Union, List
 
 from django.utils import timezone
+import pytz
 
 import uuid
 
@@ -51,7 +52,7 @@ class BusRoute(models.Model):
                               minute=time_table_obj.depart_at.minute,
                               second=time_table_obj.depart_at.second,
                               microsecond=time_table_obj.depart_at.microsecond,
-                              tzinfo=time_table_obj.depart_at.tzinfo) for
+                              tzinfo=time_table_obj.depart_at.tzinfo).astimezone(pytz.timezone('Asia/Tokyo')) for
             time_table_obj in time_table]
         return departure_time_list_for_today
 
@@ -68,7 +69,8 @@ class BusRoute(models.Model):
                                minute=time_table_obj.depart_at.minute,
                                second=time_table_obj.depart_at.second,
                                microsecond=time_table_obj.depart_at.microsecond,
-                               tzinfo=time_table_obj.depart_at.tzinfo) + datetime.timedelta(
+                               tzinfo=time_table_obj.depart_at.tzinfo).astimezone(pytz.timezone('Asia/Tokyo'))
+             + datetime.timedelta(
                 minutes=time_table_obj.default_count_close_after_departure_minutes) for time_table_obj in time_table]
         return default_count_close_time_list_for_today
 
@@ -97,7 +99,7 @@ class BusRoute(models.Model):
                or (best_time < current_time < close_time)
             else best_time, close_count_time_list_for_today)
 
-            return next_close_time
+            return next_close_time.astimezone(pytz.timezone('Asia/Tokyo'))
         else:
             return None
 
@@ -110,7 +112,7 @@ class BusRoute(models.Model):
             last_close_time = reduce(lambda best_time, close_time: close_time if (close_time < current_time)
                                      else best_time, close_count_time_list_for_today)
 
-            return last_close_time
+            return last_close_time.astimezone(pytz.timezone('Asia/Tokyo'))
         else:
             return None
 
@@ -161,7 +163,7 @@ class BusPlan(models.Model):
 
     def __str__(self):
         return self.bus_route.name + " (" + str(self.depart_at) + "発)"
-
+    
 
 class Device(models.Model):
     bus_route = models.ForeignKey(to=BusRoute, on_delete=models.CASCADE, null=True)
