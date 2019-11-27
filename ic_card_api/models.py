@@ -48,13 +48,17 @@ class BusRoute(models.Model):
             datetime.datetime(year=current_time.year,
                               month=current_time.month,
                               day=current_time.day,
-                              hour=time_table_obj.depart_at.hour,
-                              minute=time_table_obj.depart_at.minute,
-                              second=time_table_obj.depart_at.second,
-                              microsecond=time_table_obj.depart_at.microsecond,
-                              tzinfo=time_table_obj.depart_at.tzinfo).astimezone(pytz.timezone('Asia/Tokyo')) for
+                              hour=time_table_obj.depart_at.astimezone(pytz.timezone('Asia/Tokyo')).hour,
+                              minute=time_table_obj.depart_at.astimezone(pytz.timezone('Asia/Tokyo')).minute,
+                              second=time_table_obj.depart_at.astimezone(pytz.timezone('Asia/Tokyo')).second,
+                              microsecond=time_table_obj.depart_at.astimezone(pytz.timezone('Asia/Tokyo')).microsecond,
+                              tzinfo=time_table_obj.depart_at.astimezone(pytz.timezone('Asia/Tokyo')).tzinfo).astimezone(pytz.timezone('Asia/Tokyo')) for
             time_table_obj in time_table]
         return departure_time_list_for_today
+
+    @property
+    def current_time(self):
+        return timezone.now().astimezone(pytz.timezone('Asia/Tokyo'))
 
     @staticmethod
     def get_close_count_timetable_for_today(self):
@@ -65,11 +69,11 @@ class BusRoute(models.Model):
             [datetime.datetime(year=current_time.year,
                                month=current_time.month,
                                day=current_time.day,
-                               hour=time_table_obj.depart_at.hour,
-                               minute=time_table_obj.depart_at.minute,
-                               second=time_table_obj.depart_at.second,
-                               microsecond=time_table_obj.depart_at.microsecond,
-                               tzinfo=time_table_obj.depart_at.tzinfo).astimezone(pytz.timezone('Asia/Tokyo'))
+                               hour=time_table_obj.depart_at.astimezone(pytz.timezone('Asia/Tokyo')).hour,
+                               minute=time_table_obj.depart_at.astimezone(pytz.timezone('Asia/Tokyo')).minute,
+                               second=time_table_obj.depart_at.astimezone(pytz.timezone('Asia/Tokyo')).second,
+                               microsecond=time_table_obj.depart_at.astimezone(pytz.timezone('Asia/Tokyo')).microsecond,
+                               tzinfo=time_table_obj.depart_at.astimezone(pytz.timezone('Asia/Tokyo')).tzinfo).astimezone(pytz.timezone('Asia/Tokyo'))
              + datetime.timedelta(
                 minutes=time_table_obj.default_count_close_after_departure_minutes) for time_table_obj in time_table]
         return default_count_close_time_list_for_today
