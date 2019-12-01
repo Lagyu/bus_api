@@ -18,8 +18,8 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 import ic_card_api.views
 
-admin.site.site_header = "バス乗車履歴API管理画面"
-admin.site.site_title = "バス乗車履歴API管理画面"
+admin.site.site_header = "バス乗車履歴API 管理画面"
+admin.site.site_title = "バス乗車履歴API 管理画面"
 
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
@@ -27,5 +27,5 @@ urlpatterns = [
     path("", RedirectView.as_view(url="api/")),
     path("beacon_api/", include("bus_api.urls", namespace="bus_api")),
     path("csv_export/", ic_card_api.views.RouteCSVExport.as_view(), name="csv_export"),
-    path("csv_export/download/", ic_card_api.views.download_csv, name="csv_download")
+    path("csv_export/download/", ic_card_api.views.download_csv, name="csv_download"),
 ]
