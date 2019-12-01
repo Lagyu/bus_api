@@ -105,7 +105,10 @@
                                     <input type="text" class="form-control datetimepicker-input"
                                            data-target="#start_date"
                                            name="start_date"
-                                           data-toggle="datetimepicker"/>
+                                           id="start_date_input"
+                                           data-toggle="datetimepicker"
+                                           value=""
+                                    />
                                     <div class="input-group-append" data-target="#start_date"
                                          data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -115,9 +118,16 @@
                         </div>
                         <script type="text/javascript">
                             $(function () {
+                                Date.prototype.toDateInputValue = (function () {
+                                    const local = new Date(this);
+                                    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                                    return local.toJSON().slice(0, 10);
+                                });
                                 $('#start_date').datetimepicker({
                                     format: 'YYYY-MM-DD'
                                 });
+                                const date = new Date();
+                                $("#start_date_input").val(new Date(date.getFullYear(), date.getMonth(), 1).toDateInputValue())
                             });
                         </script>
                     </div>
@@ -129,6 +139,7 @@
                                     <input type="text" class="form-control datetimepicker-input"
                                            data-target="#end_date"
                                            name="end_date"
+                                           id="end_date_input"
                                            data-toggle="datetimepicker"/>
                                     <div class="input-group-append" data-target="#end_date"
                                          data-toggle="datetimepicker">
@@ -139,15 +150,22 @@
                         </div>
                         <script type="text/javascript">
                             $(function () {
+                                Date.prototype.toDateInputValue = (function () {
+                                    const local = new Date(this);
+                                    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                                    return local.toJSON().slice(0, 10);
+                                });
                                 $('#end_date').datetimepicker({
                                     format: 'YYYY-MM-DD'
                                 });
+                                const date = new Date();
+                                $("#end_date_input").val(new Date(date.getFullYear(), date.getMonth() + 1, 0).toDateInputValue())
                             });
                         </script>
                     </div>
                 </div>
-            {% csrf_token %}
-            <button class="btn btn-primary">CSVをダウンロード</button>
+                {% csrf_token %}
+                <button class="btn btn-primary">CSVをダウンロード</button>
             </form>
         </div>
     </div>

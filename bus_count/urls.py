@@ -24,5 +24,5 @@ urlpatterns = [
     path("", RedirectView.as_view(url="api/")),
     path("beacon_api/", include("bus_api.urls", namespace="bus_api")),
     path("csv_export/", ic_card_api.views.RouteCSVExport.as_view(), name="csv_export"),
-    path("csv_export/download", ic_card_api.views.download_csv, name="csv_download")
+    path("csv_export/download/", ic_card_api.views.download_csv, name="csv_download")
 ]
