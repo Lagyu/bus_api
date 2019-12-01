@@ -18,6 +18,9 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 import ic_card_api.views
 
+admin.site.site_header = "バス乗車履歴API管理画面"
+admin.site.site_title = "バス乗車履歴API管理画面"
+
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
     path("api/", include("ic_card_api.urls", namespace="ic_card_api"), name="ic_card_api_root"),
