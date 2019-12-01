@@ -15,4 +15,6 @@ router.register("bus_plan", views.BusPlanViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path("csv_export/", views.RouteCSVExport.as_view(), name="csv_export"),
+    path("csv_export/download",views.download_csv, name="csv_download")
 ]
