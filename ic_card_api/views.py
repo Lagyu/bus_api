@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 from django.http import HttpResponse, StreamingHttpResponse
+from django.urls import reverse
 
 from rest_framework import viewsets
 from ic_card_api import serializers
@@ -45,7 +46,7 @@ class RideViewSet(viewsets.ModelViewSet):
 
 
 class SuperuserRequiredMixin(object):
-    @method_decorator(user_passes_test(lambda u: u.is_authenticated and u.is_superuser))
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated and u.is_superuser, login_url="/admin/login/"))
     def dispatch(self, *args, **kwargs):
         return super(SuperuserRequiredMixin, self).dispatch(*args, **kwargs)
 
@@ -75,27 +76,35 @@ def iter_csv(field_names, query_set, pseudo_buffer):
 
 @user_passes_test(lambda u: u.is_authenticated and u.is_superuser, login_url="/admin/login/")
 def download_csv(request):
+    if request.method != "POST":
+        return HttpResponse(request.method + " method is not allowed.")
+
     start_date_str = request.POST["start_date"]  # type: str
     end_date_str = request.POST["end_date"]  # type: str
     bus_route_list = list(map(lambda x: int(x), request.POST.getlist("checks[]")))  # type: Iterable
 
-    start_datetime = datetime.datetime(year=int(start_date_str.split("-")[0]),
-                                       month=int(start_date_str.split("-")[1]),
-                                       day=int(start_date_str.split("-")[2]),
-                                       hour=0,
-                                       minute=0,
-                                       second=0,
-                                       tzinfo=pytz.timezone('Asia/Tokyo')
-                                       )
-
-    end_datetime = datetime.datetime(year=int(end_date_str.split("-")[0]),
-                                     month=int(end_date_str.split("-")[1]),
-                                     day=int(end_date_str.split("-")[2]),
-                                     hour=0,
-                                     minute=0,
-                                     second=0,
-                                     tzinfo=pytz.timezone('Asia/Tokyo')
-                                     )
+    if start_date_str == "":
+        start_datetime = datetime.datetime(year=2019, month=1, day=1)
+    else:
+        start_datetime = datetime.datetime(year=int(start_date_str.split("-")[0]),
+                                           month=int(start_date_str.split("-")[1]),
+                                           day=int(start_date_str.split("-")[2]),
+                                           hour=0,
+                                           minute=0,
+                                           second=0,
+                                           tzinfo=pytz.timezone('Asia/Tokyo')
+                                           )
+    if end_date_str == "":
+        end_datetime = datetime.datetime.now()
+    else:
+        end_datetime = datetime.datetime(year=int(end_date_str.split("-")[0]),
+                                         month=int(end_date_str.split("-")[1]),
+                                         day=int(end_date_str.split("-")[2]),
+                                         hour=0,
+                                         minute=0,
+                                         second=0,
+                                         tzinfo=pytz.timezone('Asia/Tokyo')
+                                         )
 
     result_rides = models.Ride.objects.order_by("created_at") \
         .filter(device__bus_route__in=bus_route_list,
@@ -108,6 +117,8 @@ def download_csv(request):
     response = StreamingHttpResponse(iter_csv(field_names=field_names, query_set=result_rides, pseudo_buffer=Echo()),
                                      content_type="text/csv")
 
-    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(meta)
+    response['Content-Disposition'] = 'attachment; filename={}_from_{}_to_{}.csv'.format(meta,
+                                                                                         str(start_datetime.date()),
+                                                                                         str(end_datetime.date()))
 
     return response

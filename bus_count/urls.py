@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
+import ic_card_api.views
 
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
     path("api/", include("ic_card_api.urls", namespace="ic_card_api"), name="ic_card_api_root"),
     path("", RedirectView.as_view(url="api/")),
     path("beacon_api/", include("bus_api.urls", namespace="bus_api")),
+    path("csv_export/", ic_card_api.views.RouteCSVExport.as_view(), name="csv_export"),
+    path("csv_export/download", ic_card_api.views.download_csv, name="csv_download")
 ]
