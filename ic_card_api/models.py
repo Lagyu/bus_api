@@ -32,6 +32,7 @@ class BusRoute(models.Model):
     to_office_brunch = models.ForeignKey(to=OfficeBrunch,
                                          on_delete=models.CASCADE,
                                          related_name="to_office")
+    display = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

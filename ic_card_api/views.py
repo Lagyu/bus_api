@@ -26,7 +26,7 @@ class OfficeBrunchViewSet(viewsets.ModelViewSet):
 
 
 class BusRouteViewSet(viewsets.ModelViewSet):
-    queryset = models.BusRoute.objects.all()
+    queryset = models.BusRoute.objects.all().filter(display=True)
     serializer_class = serializers.BusRouteSerializer
 
 
