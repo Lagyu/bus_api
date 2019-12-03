@@ -170,7 +170,7 @@ class BusPlan(models.Model):
     default_count_close_after_departure_minutes = models.IntegerField(default=5)
 
     def __str__(self):
-        return self.bus_route.name + " (" + str(self.depart_at.astimezone(pytz.timezone('Asia/Tokyo'))) + "発)"
+        return self.bus_route.name + " (" + str(self.depart_at.astimezone(pytz.timezone('Asia/Tokyo')).time()) + "発)"
     
 
 class Device(models.Model):
