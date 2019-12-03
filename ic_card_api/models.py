@@ -35,7 +35,10 @@ class BusRoute(models.Model):
     display = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name
+        if self.display:
+            return self.name
+        else:
+            return self.name + "(disabled on viewer)"
 
     @property
     def name(self):
