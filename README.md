@@ -1,4 +1,3 @@
-# bus_api
 iot-dojoで使ったバス乗車人数記録用のAPIサーバです。
 
 # Setup
